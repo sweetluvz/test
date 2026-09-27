@@ -1,0 +1,10 @@
+{
+  "useMarkdownLinks": true,
+  "newFileLocation": "current",
+  "attachmentFolderPath": "Attachments",
+  "spellcheck": false,
+  "strictLineBreaks": false,
+  "showLineNumber": true,
+  "readableLineLength": true,
+  "foldHeading": true
+}

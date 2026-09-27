@@ -1,0 +1,24 @@
+{
+  "serviceType": "googledrive",
+  "googledrive": {
+    "clientID": "",
+    "clientSecret": "",
+    "accessToken": "",
+    "refreshToken": "",
+    "expiresAtTime": 0
+  },
+  "syncOnSaveAfterMilliseconds": 5000,
+  "syncOnStartup": true,
+  "deleteToTrash": true,
+  "skipLargeFiles": true,
+  "skipLargeFilesTime": 30,
+  "ignorePaths": [
+    "\\.obsidian/workspace\\.json$",
+    "\\.obsidian/workspace-mobile\\.json$",
+    "\\.obsidian/cache$",
+    "\\.trash/.*"
+  ],
+  "enableStatusBarInfo": true,
+  "ribbonIconStyle": "always",
+  "conflictAction": "local_wins_if_newer"
+}

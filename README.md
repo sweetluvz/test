@@ -1,82 +1,87 @@
-# GitHub Actions Automation
+# Personal Vault — Obsidian + Google Drive
 
-Hai workflow tự động chạy hoàn toàn miễn phí trên GitHub Actions.
-
----
-
-## 1. Daily Morning Report (`notifier/`)
-
-Gửi báo cáo sáng qua **Telegram** lúc **9:00 AM GMT+7** mỗi ngày, bao gồm:
-- 🌤 Thời tiết (wttr.in — không cần key)
-- 💰 Giá vàng XAU/USD + quy đổi VNĐ/chỉ (cần `GOLD_API_KEY` — miễn phí tại goldapi.io)
-- 📈 Giá cổ phiếu VN: VNM, FPT, VIC (SSI iBoard — không cần key)
-
-### Cách thiết lập
-
-**Bước 1 — Tạo bot Telegram:**
-1. Nhắn `/newbot` cho [@BotFather](https://t.me/BotFather), lấy `BOT_TOKEN`
-2. Nhắn bất kỳ gì cho bot vừa tạo, rồi truy cập:
-   `https://api.telegram.org/bot<TOKEN>/getUpdates`
-   → lấy `chat.id` từ JSON trả về
-
-**Bước 2 — Thêm Secrets vào repo:**
-
-| Secret | Giá trị |
-|--------|---------|
-| `TELEGRAM_BOT_TOKEN` | Token từ BotFather |
-| `TELEGRAM_CHAT_ID` | chat_id của bạn |
-| `GOLD_API_KEY` | (tuỳ chọn) key từ goldapi.io |
-
-**Bước 3 — Tuỳ chỉnh (Variables, không phải Secrets):**
-
-| Variable | Default |
-|----------|---------|
-| `WEATHER_CITY` | `Ho Chi Minh City` |
-| `STOCK_SYMBOLS` | `VNM,FPT,VIC` |
-| `USD_VND_RATE` | `25000` |
-
-**Settings → Secrets and variables → Actions**
-
-**Bước 4 — Chạy thử ngay:**
-Actions tab → *Daily Morning Report* → *Run workflow*
+Ghi chú cá nhân đồng bộ miễn phí qua Google Drive, dùng được trên
+Windows / macOS / Android / iOS.
 
 ---
 
-## 2. Notion Backup (`backup/`)
+## Cách hoạt động
 
-Backup toàn bộ workspace Notion (pages + databases) sang JSON, tự động commit về repo lúc **1:00 AM GMT+7** mỗi đêm.
+```
+Obsidian (máy tính / điện thoại)
+        ↕  Remotely Save plugin
+    Google Drive (15GB miễn phí)
+        ↕  tự động
+Obsidian (thiết bị khác)
+```
 
-Dữ liệu lưu tại `backup/data/notion/YYYY-MM-DD/` (được `.gitignore` loại trừ khỏi repo chính, chỉ commit khi workflow chạy).
+Không cần git, không cần terminal. Sync tự động sau mỗi lần lưu file.
 
-### Cách thiết lập
+---
 
-**Bước 1 — Tạo Notion Integration:**
-1. Vào [notion.so/my-integrations](https://www.notion.so/my-integrations) → *New integration*
-2. Chọn workspace, lấy **Internal Integration Token**
-3. Vào từng page/database → *...* → *Add connections* → chọn integration vừa tạo
+## Thiết lập lần đầu (15 phút)
 
-**Bước 2 — Thêm Secret:**
+### Bước 1 — Tải Obsidian
+[obsidian.md/download](https://obsidian.md/download) — có sẵn cho
+Windows, macOS, Android, iOS.
 
-| Secret | Giá trị |
-|--------|---------|
-| `NOTION_TOKEN` | Token từ Notion integration |
-| `GH_PAT` | (tuỳ chọn) Personal Access Token nếu repo có branch protection |
+### Bước 2 — Mở vault này
+- **Máy tính**: mở Obsidian → *Open folder as vault* → chọn thư mục repo này
+- **Điện thoại**: mở Obsidian → *Create new vault* (đặt tên bất kỳ) → sau bước 3 sẽ thay bằng dữ liệu thật
 
-**Bước 3 — Chạy thử:**
-Actions tab → *Notion Backup* → *Run workflow*
+### Bước 3 — Cài Remotely Save
+1. Obsidian Settings → **Community plugins** → tắt Safe mode
+2. Browse → tìm **Remotely Save** → Install → Enable
+
+### Bước 4 — Kết nối Google Drive
+1. Settings → Remotely Save → chọn **Google Drive**
+2. Nhấn **Auth** → đăng nhập Google → cho phép quyền truy cập
+3. Quay lại Obsidian → nhấn **Sync** lần đầu
+
+> Sau bước này mọi thiết bị khác chỉ cần lặp lại Bước 3–4 rồi nhấn Sync
+> một lần — toàn bộ notes sẽ tải về tự động.
+
+### Bước 5 — Bật auto-sync (tuỳ chọn)
+Settings → Remotely Save:
+- **Sync on save**: bật (sync 5 giây sau mỗi lần lưu)
+- **Sync on startup**: bật
+- **Run once every X minutes**: 10
 
 ---
 
 ## Cấu trúc thư mục
 
 ```
-.
-├── .github/workflows/
-│   ├── daily-report.yml      # Workflow gửi báo cáo sáng
-│   └── backup-notion.yml     # Workflow backup Notion
-├── notifier/
-│   └── daily_report.py       # Script cào dữ liệu + gửi Telegram
-└── backup/
-    ├── backup_notion.py       # Script backup Notion API
-    └── data/notion/           # Dữ liệu backup (bị gitignore)
+vault/
+├── Daily Notes/      ← ghi chú hàng ngày (dùng Calendar plugin)
+├── Projects/         ← theo dõi dự án, công việc
+├── Resources/        ← tài liệu tham khảo, link, kiến thức
+├── Templates/        ← mẫu ghi chú
+├── Attachments/      ← ảnh, file đính kèm (tự động)
+└── Archive/          ← ghi chú cũ không còn active
 ```
+
+---
+
+## Plugins đi kèm
+
+| Plugin | Tác dụng |
+|--------|----------|
+| **Remotely Save** | Sync qua Google Drive |
+| **Calendar** | Lịch tháng, tạo Daily Note bằng 1 click |
+| **Dataview** | Query ghi chú như database (nâng cao) |
+| **Templater** | Tạo note từ template tự động |
+
+Cài tất cả trong: Settings → Community plugins → Browse.
+
+---
+
+## Lưu ý
+
+- **Conflict**: nếu sửa cùng file trên 2 thiết bị lúc offline,
+  Remotely Save giữ bản có timestamp mới hơn. Bản cũ lưu vào `.trash/`
+  trong 30 ngày.
+- **Dung lượng**: Google Drive tính cả ảnh đính kèm. 15GB đủ cho
+  hàng chục nghìn trang ghi chú text.
+- **Bảo mật**: dữ liệu lưu trên Google Drive của bạn, không qua
+  server thứ ba nào.

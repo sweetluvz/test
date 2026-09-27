@@ -1,0 +1,14 @@
+# Đảm bảo line ending nhất quán giữa Windows và macOS/Linux
+* text=auto eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+
+# Binary — không diff
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.mp3 binary
+*.mp4 binary

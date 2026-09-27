@@ -1,4 +1,15 @@
-__pycache__/
-*.pyc
-.env
-backup/data/
+# Obsidian cache & workspace state (không sync)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/remotely-save/credential.json
+
+# Thư mục backup tạm
+.trash/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
